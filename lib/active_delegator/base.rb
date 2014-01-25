@@ -32,9 +32,8 @@ module ActiveDelegator
 
     attr_accessor :model
 
-    def initialize(*args)
-      super
-      @attributes = AttributeProxy.new(model_instance, @attributes)
+    after_initialize do |store|
+      store.instance_variable_set(:@attributes, AttributeProxy.new(model_instance, @attributes))
     end
     #
     #def write_attribute(attr, value)
