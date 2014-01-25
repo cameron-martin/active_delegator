@@ -7,6 +7,10 @@ module ActiveDelegator
 
     self.abstract_class=true
 
+    after_initialize do |store|
+      store.set_attributes
+    end
+
 
     class << self
 
@@ -38,13 +42,13 @@ module ActiveDelegator
       @model ||= self.class.model_class.allocate
     end
 
-    ## Copies attributes from store to model
-    #def set_attributes
-    #  self.class.attributes.each do |attr|
-    #    model_instance.public_send("#{attr}=", read_attribute(attr))
-    #  end
-    #end
-    #
+    # Copies attributes from store to model
+    def set_attributes
+      self.class.attributes.each do |attr|
+        model_instance.public_send("#{attr}=", read_attribute(attr))
+      end
+    end
+
     ## Copies attributes from model to store
     #def get_attributes
     #  self.class.attributes.each do |attr|
