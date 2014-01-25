@@ -16,5 +16,9 @@ module ActiveDelegator
     def []=(key, value)
       @model.public_send("#{key}=", value)
     end
+
+    def keys
+      @attributes
+    end
   end
 end
