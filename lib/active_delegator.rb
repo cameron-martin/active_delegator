@@ -1,4 +1,4 @@
-require "active_delegator/version"
+require 'active_delegator/version'
 
 require 'active_record'
 
