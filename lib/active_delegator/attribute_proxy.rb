@@ -9,9 +9,11 @@ module ActiveDelegator
       end
     end
 
-    def [](key)
+    def fetch(key)
       @model.public_send(key)
     end
+
+    alias_method :[], :fetch
 
     def []=(key, value)
       @model.public_send("#{key}=", value)
