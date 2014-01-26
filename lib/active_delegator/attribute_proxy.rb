@@ -20,7 +20,7 @@ module ActiveDelegator
     end
 
     def has_key?(key)
-      @attributes.include?(key)
+      @attributes.include?(key.to_sym)
     end
 
     alias_method :include?, :has_key?
