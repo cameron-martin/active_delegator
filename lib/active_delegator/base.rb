@@ -31,7 +31,7 @@ module ActiveDelegator
       def wrap(model)
         allocate.tap do |store|
           store.model_instance = model
-          store.init_with('attributes' => AttributeProxy.new(model_instance))
+          store.init_with('attributes' => store.attribute_proxy)
         end
       end
 
@@ -40,16 +40,19 @@ module ActiveDelegator
     attr_writer :model_instance
 
     after_find do |store|
-      store.instance_variable_set(:@attributes, AttributeProxy.new(model_instance, @attributes))
+      store.use_attribute_proxy
     end
-    #
-    #def write_attribute(attr, value)
-    #  model_instance.public_send("#{attr}=", value)
-    #end
-    #
-    #def read_attribute(attr)
-    #  model_instance.public_send(attr)
-    #end
+
+    def use_attribute_proxy
+      @attributes.each do |key, value|
+        attribute_proxy[key]=value
+      end
+      @attributes = attribute_proxy
+    end
+
+    def attribute_proxy
+      @attribute_proxy ||= AttributeProxy.new(model_instance, self.class.attributes)
+    end
 
     def model_instance
       @model_instance ||= self.class.model_class.allocate

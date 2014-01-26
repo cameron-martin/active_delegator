@@ -1,12 +1,8 @@
 module ActiveDelegator
   class AttributeProxy
-    def initialize(model, start_attributes={})
-      @attributes = start_attributes.keys
+    def initialize(model, attributes)
+      @attributes = attributes
       @model = model
-
-      start_attributes.each do |key, value|
-        self[key]=value
-      end
     end
 
     def fetch(key)
