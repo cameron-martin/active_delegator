@@ -25,5 +25,12 @@ module ActiveDelegator
 
     alias_method :include?, :key?
 
+    def each
+      return to_enum(:each) unless block_given?
+      @attributes.each do |attr|
+        yield attr, self[attr]
+      end
+    end
+
   end
 end
