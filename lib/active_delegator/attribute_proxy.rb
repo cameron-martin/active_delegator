@@ -1,6 +1,6 @@
 module ActiveDelegator
   class AttributeProxy
-    def initialize(model, start_attributes)
+    def initialize(model, start_attributes={})
       @attributes = start_attributes.keys
       @model = model
 
@@ -21,6 +21,10 @@ module ActiveDelegator
 
     def keys
       @attributes
+    end
+
+    def key?(key)
+      @model.respond_to?(key)
     end
   end
 end

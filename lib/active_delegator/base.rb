@@ -31,7 +31,7 @@ module ActiveDelegator
       def wrap(model)
         allocate.tap do |store|
           store.model_instance = model
-          store.init_with({})
+          store.init_with('attributes' => AttributeProxy.new(model_instance))
         end
       end
 
@@ -39,7 +39,7 @@ module ActiveDelegator
 
     attr_writer :model_instance
 
-    after_initialize do |store|
+    after_find do |store|
       store.instance_variable_set(:@attributes, AttributeProxy.new(model_instance, @attributes))
     end
     #
