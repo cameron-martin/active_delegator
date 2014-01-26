@@ -19,11 +19,12 @@ module ActiveDelegator
       @attributes
     end
 
-    def key?(key)
-      @model.respond_to?(key)
+    def has_key?(key)
+      @attributes.include?(key)
     end
 
-    alias_method :include?, :key?
+    alias_method :include?, :has_key?
+    alias_method :key?, :has_key?
 
     def each
       return to_enum(:each) unless block_given?
