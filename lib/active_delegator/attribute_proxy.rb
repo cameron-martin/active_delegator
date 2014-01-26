@@ -26,5 +26,8 @@ module ActiveDelegator
     def key?(key)
       @model.respond_to?(key)
     end
+
+    alias_method :include?, :key?
+
   end
 end
