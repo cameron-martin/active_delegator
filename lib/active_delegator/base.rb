@@ -28,9 +28,16 @@ module ActiveDelegator
         attributes.push(attr)
       end
 
+      def wrap(model)
+        allocate.tap do |store|
+          store.model_instance = model
+          store.init_with({})
+        end
+      end
+
     end
 
-    attr_accessor :model
+    attr_writer :model_instance
 
     after_initialize do |store|
       store.instance_variable_set(:@attributes, AttributeProxy.new(model_instance, @attributes))
@@ -45,7 +52,11 @@ module ActiveDelegator
     #end
 
     def model_instance
-      @model ||= self.class.model_class.allocate
+      @model_instance ||= self.class.model_class.allocate
+    end
+
+    def method_missing(method, *args, &block)
+      model_instance.send(method, *args, &block)
     end
 
     # Copies attributes from store to model
