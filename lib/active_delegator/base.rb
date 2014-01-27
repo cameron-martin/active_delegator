@@ -37,8 +37,7 @@ module ActiveDelegator
 
       def insert(model)
         new.tap do |store|
-          store.model_instance = model
-          store.use_attribute_proxy
+          store.handle_insert(model)
         end
       end
 
@@ -48,6 +47,14 @@ module ActiveDelegator
 
     after_find do |store|
       store.create_model
+    end
+
+    def handle_insert(model)
+      self.class.attributes.each do |attr|
+        self[attr] = model.public_send(attr)
+      end
+      self.model_instance = model
+      use_attribute_proxy
     end
 
     def create_model
