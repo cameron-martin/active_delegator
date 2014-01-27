@@ -1,3 +1,5 @@
+# REVIEW: What to do wrt dirty tracking when an object updates its self.
+
 require 'active_record'
 
 require 'active_delegator/attribute_proxy'
@@ -83,7 +85,11 @@ module ActiveDelegator
       model_instance.send(method, *args, &block)
     end
 
-    # Copies attributes from store to model
+    def respond_to_missing?(method_name, include_private = false)
+      model_instance.respond_to?(method_name, include_private) || super
+    end
+
+      # Copies attributes from store to model
     #def set_attributes
     #  self.class.attributes.each do |attr|
     #    model_instance.public_send("#{attr}=", read_attribute(attr))
