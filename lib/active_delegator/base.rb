@@ -58,6 +58,7 @@ module ActiveDelegator
     end
 
     def create_model
+      raise 'Model already created' if instance_variable_defined?(:@model_instance)
       @model_instance = self.class.model_class.allocate
       @attributes.each do |key, value|
         attribute_proxy[key]=value
@@ -74,6 +75,7 @@ module ActiveDelegator
   private
 
     def use_attribute_proxy
+      raise 'Attribute proxy already being used' if @attributes.is_a?(AttributeProxy)
       @attributes = attribute_proxy
     end
 
