@@ -1,6 +1,6 @@
 require 'rspec'
 
-require 'active_delegator/mapper'
+require 'active_delegator/base'
 
 class TestMapper < ActiveDelegator::Mapper
 
