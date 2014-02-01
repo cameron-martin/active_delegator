@@ -20,6 +20,19 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+## Example
+
+    model = Model.new(id: 123, name: 'Model')
+
+    Mapper.create(model).save # Saves the model to the db
+
+    Mapper.find(123).model do |model|
+      model.name = 'New Name'
+    end.save
+
+
+
+
 ## Contributing
 
 1. Fork it
