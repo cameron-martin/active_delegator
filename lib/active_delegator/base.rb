@@ -77,6 +77,7 @@ module ActiveDelegator
       return @model unless block_given?
       yield @model
       update
+      self
     end
 
     def save
