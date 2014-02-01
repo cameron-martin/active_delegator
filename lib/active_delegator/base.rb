@@ -25,6 +25,10 @@ module ActiveDelegator
         @attribute_map ||= {}
       end
 
+      def attributes
+        attribute_map.keys
+      end
+
 
       def attribute(attr)
         attr = {attr => attr} unless attr.is_a?(Hash)
@@ -47,7 +51,7 @@ module ActiveDelegator
 
     def use_model(model)
       self.model_instance = model
-      self.class.attribute_map.keys.each do |attr|
+      self.class.attributes.each do |attr|
         self[attr] = attribute_proxy[attr]
       end
       use_attribute_proxy
