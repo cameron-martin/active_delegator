@@ -83,6 +83,17 @@ module ActiveDelegator
       @store.save
     end
 
+    def[](key)
+      @store[key]
+    end
+
+    def []=(key, value)
+      @store[key] = value
+      if self.class.attribute_map.has_key?(key.to_sym)
+        @model.public_send("#{self.class.attribute_map[key.to_sym]}=", value)
+      end
+    end
+
   private
 
     # Copies over attributes from the model to the store
