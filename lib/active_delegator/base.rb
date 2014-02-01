@@ -59,14 +59,14 @@ module ActiveDelegator
 
     def create_model
       @model_instance = self.class.model_class.allocate
-      @attribute_map.each do |key, value|
+      @attributes.each do |key, value|
         attribute_proxy[key]=value
       end
       use_attribute_proxy
     end
 
     def use_attribute_proxy
-      @attribute_map = attribute_proxy
+      @attributes = attribute_proxy
     end
 
     def attribute_proxy
