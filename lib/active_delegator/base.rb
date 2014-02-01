@@ -65,18 +65,20 @@ module ActiveDelegator
       use_attribute_proxy
     end
 
+    def model_instance
+      return @model_instance if instance_variable_defined?(:@model_instance)
+      create_model
+      @model_instance
+    end
+
+  private
+
     def use_attribute_proxy
       @attributes = attribute_proxy
     end
 
     def attribute_proxy
       @attribute_proxy ||= AttributeProxy.new(model_instance, self.class.attribute_map)
-    end
-
-    def model_instance
-      return @model_instance if instance_variable_defined?(:@model_instance)
-      create_model
-      @model_instance
     end
 
     def method_missing(method, *args, &block)
