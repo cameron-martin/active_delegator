@@ -13,6 +13,11 @@ describe ActiveDelegator::AttributeProxy do
       attribute_proxy[:attr1]
     end
 
+    it 'normalises arguments' do
+      model.should_receive(:attr2)
+      attribute_proxy['attr1']
+    end
+
     it 'persists internal attributes' do
       attribute_proxy[:other] = :value
       expect(attribute_proxy[:other]).to eq(:value)
@@ -23,6 +28,11 @@ describe ActiveDelegator::AttributeProxy do
     it 'delegates mapped attribute getters to model' do
       model.should_receive(:attr2=).with(:value)
       attribute_proxy[:attr1] = :value
+    end
+
+    it 'normalises arguments' do
+      model.should_receive(:attr2=).with(:value)
+      attribute_proxy['attr1'] = :value
     end
 
     it 'handles unmapped attributes internally' do
@@ -43,6 +53,9 @@ describe ActiveDelegator::AttributeProxy do
   describe '#has_key?' do
     it 'has mapped key' do
       expect(attribute_proxy.has_key?(:attr1)).to be_true
+    end
+    it 'normalises arguments' do
+      expect(attribute_proxy.has_key?('attr1')).to be_true
     end
     it 'does not have other key' do
       expect(attribute_proxy.has_key?(:other)).to be_false

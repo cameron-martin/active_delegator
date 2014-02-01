@@ -7,6 +7,7 @@ module ActiveDelegator
     end
 
     def fetch(key)
+      key = key.to_sym
       if @attribute_map.has_key?(key)
         @model.public_send(@attribute_map[key])
       else
@@ -17,6 +18,7 @@ module ActiveDelegator
     alias_method :[], :fetch
 
     def []=(key, value)
+      key = key.to_sym
       if @attribute_map.has_key?(key)
         @model.public_send("#{@attribute_map[key]}=", value)
       else
