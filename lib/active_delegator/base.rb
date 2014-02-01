@@ -30,14 +30,7 @@ module ActiveDelegator
         attributes.push(attr)
       end
 
-      #def wrap(model)
-      #  allocate.tap do |store|
-      #    store.model_instance = model
-      #    store.init_with('attributes' => store.attribute_proxy)
-      #  end
-      #end
-
-      def insert(model)
+      def wrap(model)
         new.tap do |store|
           store.use_model(model)
         end
