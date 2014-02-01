@@ -1,26 +1,35 @@
 module ActiveDelegator
   class AttributeProxy
-    def initialize(model, attributes)
-      @attributes = attributes
+    def initialize(model, attribute_map)
+      @attribute_map = attribute_map
+      @unmapped_attributes = {}
       @model = model
     end
 
     def fetch(key)
-      @model.public_send(key)
+      if @attribute_map.has_key?(key)
+        @model.public_send(key)
+      else
+        @unmapped_attributes[key]
+      end
     end
 
     alias_method :[], :fetch
 
     def []=(key, value)
-      @model.public_send("#{key}=", value)
+      if @attribute_map.has_key?(key)
+        @model.public_send("#{@attribute_map[key]}=", value)
+      else
+        @unmapped_attributes[key] = value
+      end
     end
 
     def keys
-      @attributes
+      @attribute_map.keys
     end
 
     def has_key?(key)
-      @attributes.include?(key.to_sym)
+      keys.include?(key.to_sym)
     end
 
     alias_method :include?, :has_key?
@@ -28,7 +37,7 @@ module ActiveDelegator
 
     def each
       return to_enum(:each) unless block_given?
-      @attributes.each do |attr|
+      keys.each do |attr|
         yield attr, self[attr]
       end
     end

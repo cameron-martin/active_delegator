@@ -22,12 +22,13 @@ module ActiveDelegator
       end
 
       def attributes
-        @attributes ||= []
+        @attributes ||= {}
       end
 
 
       def attribute(attr)
-        attributes.push(attr)
+        attr = {attr => attr} unless attr.is_a?(Hash)
+        attributes.merge!(attr)
       end
 
       def wrap(model)
