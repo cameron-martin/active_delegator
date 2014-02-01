@@ -21,14 +21,14 @@ module ActiveDelegator
         self.model_class = klass
       end
 
-      def attributes
-        @attributes ||= {}
+      def attribute_map
+        @attribute_map ||= {}
       end
 
 
       def attribute(attr)
         attr = {attr => attr} unless attr.is_a?(Hash)
-        attributes.merge!(attr)
+        attribute_map.merge!(attr)
       end
 
       def wrap(model)
@@ -47,7 +47,7 @@ module ActiveDelegator
 
     def use_model(model)
       self.model_instance = model
-      self.class.attributes.each do |attr|
+      self.class.attribute_map.keys.each do |attr|
         self[attr] = attribute_proxy[attr]
       end
       use_attribute_proxy
@@ -55,18 +55,18 @@ module ActiveDelegator
 
     def create_model
       @model_instance = self.class.model_class.allocate
-      @attributes.each do |key, value|
+      @attribute_map.each do |key, value|
         attribute_proxy[key]=value
       end
       use_attribute_proxy
     end
 
     def use_attribute_proxy
-      @attributes = attribute_proxy
+      @attribute_map = attribute_proxy
     end
 
     def attribute_proxy
-      @attribute_proxy ||= AttributeProxy.new(model_instance, self.class.attributes)
+      @attribute_proxy ||= AttributeProxy.new(model_instance, self.class.attribute_map)
     end
 
     def model_instance
