@@ -8,7 +8,7 @@ module ActiveDelegator
 
     def fetch(key)
       if @attribute_map.has_key?(key)
-        @model.public_send(key)
+        @model.public_send(@attribute_map[key])
       else
         @unmapped_attributes[key]
       end
@@ -25,7 +25,7 @@ module ActiveDelegator
     end
 
     def keys
-      @attribute_map.keys
+      @attribute_map.keys + @unmapped_attributes.keys
     end
 
     def has_key?(key)
