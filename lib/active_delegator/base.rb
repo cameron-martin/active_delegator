@@ -1,9 +1,12 @@
 require 'active_delegator/model_serializer'
+require 'active_delegator/relation'
 
 module ActiveDelegator
   class Base
 
     class << self
+
+      extend Forwardable
 
       attr_reader :model_class
 
@@ -60,6 +63,12 @@ module ActiveDelegator
 
       def find(id)
         new(store_class.find(id))
+      end
+
+      def_delegators :all, :where
+
+      def all
+        Relation.new(store_class.all, self)
       end
 
     end
