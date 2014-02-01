@@ -1,3 +1,7 @@
+# Stands in for the @attributes hash in an active record instance
+# It redirects @attributes[:key] to model.key, and @attributes[:key]= to model.key=
+# While storing any other keys just as a normal hash does
+
 module ActiveDelegator
   class AttributeProxy
     def initialize(model, attribute_map)
