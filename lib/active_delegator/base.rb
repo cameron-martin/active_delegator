@@ -89,19 +89,5 @@ module ActiveDelegator
       model_instance.respond_to?(method_name, include_private) || super
     end
 
-      # Copies attributes from store to model
-    #def set_attributes
-    #  self.class.attributes.each do |attr|
-    #    model_instance.public_send("#{attr}=", read_attribute(attr))
-    #  end
-    #end
-    #
-    ### Copies attributes from model to store
-    #def get_attributes
-    #  self.class.attributes.each do |attr|
-    #    write_attribute(attr, model_instance.public_send(attr))
-    #  end
-    #end
-
   end
 end
