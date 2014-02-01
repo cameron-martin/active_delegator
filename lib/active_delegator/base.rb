@@ -21,6 +21,10 @@ module ActiveDelegator
         store_class.has_one(*args, &block)
       end
 
+      def table(table_name)
+        store_class.table_name=table_name
+      end
+
       # User options
 
       def maps_to(klass)
