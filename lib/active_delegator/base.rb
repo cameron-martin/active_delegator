@@ -83,13 +83,13 @@ module ActiveDelegator
       @attribute_proxy ||= AttributeProxy.new(model_instance, self.class.attribute_map)
     end
 
-    def method_missing(method, *args, &block)
-      model_instance.send(method, *args, &block)
-    end
-
-    def respond_to_missing?(method_name, include_private = false)
-      model_instance.respond_to?(method_name, include_private) || super
-    end
+    #def method_missing(method, *args, &block)
+    #  model_instance.send(method, *args, &block)
+    #end
+    #
+    #def respond_to_missing?(method_name, include_private = false)
+    #  model_instance.respond_to?(method_name, include_private) || super
+    #end
 
   end
 end
