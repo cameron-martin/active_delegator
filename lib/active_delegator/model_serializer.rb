@@ -7,14 +7,14 @@ module ActiveDelegator
 
     def serialize(model)
       @attribute_map.each_with_object({}) do |(from, to), attributes|
-        attributes[from] = model.public_send(to)
+        attributes[from.to_s] = model.public_send(to)
       end
     end
 
     def unserialize(klass, attributes)
       klass.allocate.tap do |model|
         @attribute_map.each do |from, to|
-          model.public_send("#{to}=", attributes[from]) if attributes[from]
+          model.public_send("#{to}=", attributes[from.to_s]) if attributes[from.to_s]
         end
       end
     end
