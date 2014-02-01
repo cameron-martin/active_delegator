@@ -7,6 +7,20 @@ module ActiveDelegator
 
       attr_reader :model_class
 
+      # Relations
+
+      def has_many(*args, &block)
+        store_class.has_many(*args, &block)
+      end
+
+      def belongs_to(*args, &block)
+        store_class.belongs_to(*args, &block)
+      end
+
+      def has_one(*args, &block)
+        store_class.has_one(*args, &block)
+      end
+
       # User options
 
       def maps_to(klass)
