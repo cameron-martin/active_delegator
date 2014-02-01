@@ -13,7 +13,7 @@ module ActiveDelegator
 
       it 'should serialize model' do
         model.stub(:model_attr => :name)
-        expect(model_serializer.serialize(model)).to eq({:db_attr => :name})
+        expect(model_serializer.serialize(model)).to eq({'db_attr' => :name})
       end
     end
 
@@ -30,16 +30,8 @@ module ActiveDelegator
         it 'sets model attributes' do
           model_class.stub(:allocate) { model }
           model.should_receive(:model_attr=).with(:value)
-          model_serializer.unserialize(model_class, {:db_attr => :value })
+          model_serializer.unserialize(model_class, {'db_attr' => :value })
         end
-      end
-
-      context 'with initialize block' do
-
-        it 'sends new to the model class' do
-          model_class.should_receive(:new)
-        end
-
       end
     end
   end
