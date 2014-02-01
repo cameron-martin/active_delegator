@@ -79,6 +79,10 @@ module ActiveDelegator
       update
     end
 
+    def save
+      @store.save
+    end
+
   private
 
     # Copies over attributes from the model to the store
