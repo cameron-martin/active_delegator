@@ -67,7 +67,7 @@ module ActiveDelegator
       end
 
       def create_unless_exists(model)
-        unless exists?(model)
+        unless model_exists?(model)
           create(model).tap do |mapper|
             yield mapper if block_given?
           end.save
