@@ -90,6 +90,7 @@ module ActiveDelegator
     end
 
     def save
+      update
       @store.save
     end
 
