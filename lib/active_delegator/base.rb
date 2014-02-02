@@ -78,6 +78,10 @@ module ActiveDelegator
         new(store_class.find(id))
       end
 
+      def exists?(id)
+        store_class.exists?(id)
+      end
+
       def find_model(model)
         attributes = serializer.serialize(model)
         id = attributes[store_class.primary_key]
