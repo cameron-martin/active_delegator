@@ -66,8 +66,8 @@ module ActiveDelegator
         model_exists?(model) ? find_model(model) : create(model)
       end
 
-      def create_unless_exists?(model)
-        create(model) unless exists?(model)
+      def create_unless_exists(model)
+        create(model).save unless exists?(model)
       end
 
       def find(id)
