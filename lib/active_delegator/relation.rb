@@ -27,12 +27,12 @@ module ActiveDelegator
 
 
     def each(*args, &block)
-      @relation.to_a.each(*args, &block)
+      to_a.each(*args, &block)
     end
 
     private
     def generate_cache
-      @relation.to_a.each_with_object([]) do |arr, store|
+      @relation.to_a.each_with_object([]) do |store, arr|
         arr << @mapper_class.new(store)
       end
     end
