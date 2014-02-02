@@ -65,6 +65,18 @@ module ActiveDelegator
         new(store_class.find(id))
       end
 
+      def find_model(model)
+        attributes = unserializer.serialize(model)
+        id = attributes[store_class.primary_key]
+        find(id)
+      end
+
+      def model_exists?(model)
+        attributes = unserializer.serialize(model)
+        id = attributes[store_class.primary_key]
+        exists?(id)
+      end
+
       def_delegators :all, :where
 
       def all
