@@ -67,7 +67,11 @@ module ActiveDelegator
       end
 
       def create_unless_exists(model)
-        create(model).save unless exists?(model)
+        unless exists?(model)
+          create(model).tap do |mapper|
+            yield mapper if block_given?
+          end.save
+        end
       end
 
       def find(id)
@@ -99,10 +103,6 @@ module ActiveDelegator
       @model = model || create_model
     end
 
-    def create_model
-      self.class.serializer.unserialize(self.class.model_class.allocate, @store.attributes)
-    end
-
     def model
       return @model unless block_given?
       yield @model
@@ -128,6 +128,10 @@ module ActiveDelegator
     end
 
   private
+
+    def create_model
+      self.class.serializer.unserialize(self.class.model_class.allocate, @store.attributes)
+    end
 
     # Copies over attributes from the model to the store
     def sync_from_model

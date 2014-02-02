@@ -15,6 +15,7 @@ module ActiveDelegator
       @attribute_map.each do |from, to|
         model.public_send("#{to}=", attributes[from.to_s]) if attributes[from.to_s]
       end
+      model
     end
   end
 end
