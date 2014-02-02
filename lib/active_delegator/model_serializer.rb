@@ -11,11 +11,9 @@ module ActiveDelegator
       end
     end
 
-    def unserialize(klass, attributes)
-      klass.allocate.tap do |model|
-        @attribute_map.each do |from, to|
-          model.public_send("#{to}=", attributes[from.to_s]) if attributes[from.to_s]
-        end
+    def unserialize(model, attributes)
+      @attribute_map.each do |from, to|
+        model.public_send("#{to}=", attributes[from.to_s]) if attributes[from.to_s]
       end
     end
   end

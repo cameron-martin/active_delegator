@@ -61,18 +61,27 @@ module ActiveDelegator
         new(store_class.new(serializer.serialize(model)), model)
       end
 
+      # REVIEW: This is inconsistent in whether the model is re-created or injected
+      def create_or_find(model)
+        model_exists?(model) ? find_model(model) : create(model)
+      end
+
+      def create_unless_exists?(model)
+        create(model) unless exists?(model)
+      end
+
       def find(id)
         new(store_class.find(id))
       end
 
       def find_model(model)
-        attributes = unserializer.serialize(model)
+        attributes = serializer.serialize(model)
         id = attributes[store_class.primary_key]
         find(id)
       end
 
       def model_exists?(model)
-        attributes = unserializer.serialize(model)
+        attributes = serializer.serialize(model)
         id = attributes[store_class.primary_key]
         exists?(id)
       end
@@ -85,25 +94,26 @@ module ActiveDelegator
 
     end
 
-    def initialize(store, model=nil)
-      @store = store
+    def initialize(store=nil, model=nil)
+      @store = store || self.class.store_class.new
       @model = model || create_model
     end
 
     def create_model
-      self.class.serializer.unserialize(self.class.model_class, @store.attributes)
+      self.class.serializer.unserialize(self.class.model_class.allocate, @store.attributes)
     end
 
     def model
       return @model unless block_given?
       yield @model
-      update
+      sync_from_model
       self
     end
 
     def save
-      update
+      sync_from_model
       @store.save
+      sync_from_store
     end
 
     def[](key)
@@ -120,8 +130,12 @@ module ActiveDelegator
   private
 
     # Copies over attributes from the model to the store
-    def update
+    def sync_from_model
       @store.assign_attributes(self.class.serializer.serialize(@model))
+    end
+
+    def sync_from_store
+      self.class.serializer.unserialize(@model, @store.attributes)
     end
 
 
