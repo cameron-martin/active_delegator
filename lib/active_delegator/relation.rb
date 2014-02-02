@@ -1,6 +1,8 @@
 module ActiveDelegator
   class Relation
 
+    include Enumerable
+
     class << self
 
     private
@@ -16,12 +18,6 @@ module ActiveDelegator
     def initialize(relation, mapper_class)
       @relation = relation
       @mapper_class = mapper_class
-    end
-
-    def to_a
-      @relation.to_a.each_with_object([]) do |arr, store|
-        arr << @mapper_class.new(store)
-      end
     end
 
     def each
